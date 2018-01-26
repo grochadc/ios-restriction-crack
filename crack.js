@@ -17,7 +17,7 @@ const yargs = require('yargs')
   .option('start', {
     alias: 'S',
     describe: 'The starting point of the bruteforce',
-    default: 1
+    default: 0
   })
   .option('end', {
     alias: 'e',
@@ -50,22 +50,11 @@ function decode(key, salt, start, end){
         var cipher = CryptoJS.PBKDF2(pass, salt, {keySize: 5, iterations: 1000}).toString();
         if(cipher == key){
           console.log("Key found! ",i);
-          process.exit();
+          return true;
         }
   }
   console.log("Reached the end and no key was found", "\007");
-  process.exit();
 }
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.on('keypress', (str, key) => {
-  if (key.ctrl && key.name === 'c') {
-    process.exit();
-  } else {
-    decode(parsedKey, parsedSalt,argStart, argEnd );
-  }
-});
-
 console.log('Trying from ',argStart, 'to', argEnd);
-console.log('Press any key to continue...');
+decode(parsedKey, parsedSalt,argStart, argEnd );
