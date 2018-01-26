@@ -24,7 +24,12 @@ const yargs = require('yargs')
     describe: 'The ending point of the bruteforce',
     default: 100
   })
-  .demandOption(['hash','salt'], 'Please provide the necessary arguments to crack')
+  .option('interval', {
+    alias: 'i',
+    describe: 'The interval of passwords to check (separated by a dash - )',
+    default: "0-100"
+  })
+  .demandOption(['hash','salt'], 'Please provide the necessary arguments to start the crack')
 .help()
 .argv
 
@@ -33,8 +38,8 @@ var argStart = yargs.start
 var argEnd = yargs.end;
 
 
-// var ENCODED_KEY = "+ap25dpiS4wC53vl0iouBQ9hNo0=";
-// var ENCODED_SALT= "8qs/Eg==";
+// Example hash +ap25dpiS4wC53vl0iouBQ9hNo0=
+// Example salt 8qs/Eg==
 
 var ENCODED_KEY = yargs.hash;
 var ENCODED_SALT = yargs.salt;
