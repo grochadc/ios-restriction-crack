@@ -50,11 +50,22 @@ function decode(key, salt, start, end){
         var cipher = CryptoJS.PBKDF2(pass, salt, {keySize: 5, iterations: 1000}).toString();
         if(cipher == key){
           console.log("Key found! ",i);
-          return true;
+          process.exit();
         }
   }
   console.log("Reached the end and no key was found", "\007");
+  process.exit();
 }
 
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+process.stdin.on('keypress', (str, key) => {
+  if (key.ctrl && key.name === 'c') {
+    process.exit();
+  } else {
+    decode(parsedKey, parsedSalt,argStart, argEnd );
+  }
+});
+
 console.log('Trying from ',argStart, 'to', argEnd);
-decode(parsedKey, parsedSalt,argStart, argEnd );
+console.log('Press any key to continue...');
